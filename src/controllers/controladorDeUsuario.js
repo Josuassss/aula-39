@@ -2,8 +2,8 @@ const servicoDeUsuario = require("../services/servicoDeUsuario");
 const { HttpError } = require("../errors/HttpError");
 
 class ControladorDeUsuario {
-  pegarTodos(_req, res) {
-    const usuarios = servicoDeUsuario.buscarTodos();
+  async pegarTodos(_req, res) {
+    const usuarios = await servicoDeUsuario.buscarTodos();
 
     res.status(200).json(usuarios);
   }
@@ -15,9 +15,9 @@ class ControladorDeUsuario {
     res.status(200).json(usuario);
   }
 
-  cadastrar(req, res) {
+  async cadastrar(req, res) {
     const { nome, email, cpf, senha } = req.body;
-    const resposta = servicoDeUsuario.cadastrar(nome, email, cpf, senha);
+    const resposta = await servicoDeUsuario.cadastrar(nome, email, cpf, senha);
 
     if (resposta.error) res.status(400).json(resposta.error);
 
@@ -31,16 +31,16 @@ class ControladorDeUsuario {
     res.status(200).json(resposta);
   }
 
-  atualizar(req, res) {
-    const dados = req.body;
-    const usuarioId = req.params.id;
-    const resposta = servicoDeUsuario.atualizar(usuarioId, dados);
+  async atualizar(req, res) {
+    const dados = await req.body;
+    const usuarioId = await req.params.id;
+    const resposta = await servicoDeUsuario.atualizar(usuarioId, dados);
 
     res.status(200).json(resposta);
   }
 
-  deletar(req, res) {
-    const id = req.params.id;
+  async deletar(req, res) {
+    const id = await req.params.id;
     servicoDeUsuario.deletar(id);
 
     res
